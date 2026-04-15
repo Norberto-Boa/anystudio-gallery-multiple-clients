@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import type { DriveItem } from "../types/drive";
 import { getDriveGridImage, listFolderContents } from "../services/drive";
 import { ImagePreviewModal } from "../components/ImagePreviewModal";
+import { GalleryHeroHeader } from "../components/GalleryHeroHeader";
 
 export function GalleryPage() {
   const { folderId = "" } = useParams();
@@ -63,7 +64,15 @@ export function GalleryPage() {
 
   return (
     <div className="mx-auto max-w-7xl p-6">
-      <h1 className="mb-6 text-3xl font-bold">Galeria</h1>
+      {images.length > 0 ? (
+        <GalleryHeroHeader
+          title="Baptismo"
+          coverUrl={images[0].thumbnailLink}
+          date="11 de Abril de 2026"
+        />
+      ) : (
+        <h1 className="mb-6 text-3xl font-bold">Galeria</h1>
+      )}
 
       {folders.length > 0 && (
         <>

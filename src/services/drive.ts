@@ -13,6 +13,11 @@ export function getDriveGridImage(url?: string, size = 1200) {
   return url.replace(/=s\d+/, `=s${size}`);
 }
 
+export function getDriveGridImageHuge(url?: string, size = 2200) {
+  if (!url) return "";
+  return url.replace(/=s\d+/, `=s${size}`);
+}
+
 export async function listFolderContents(folderId: string) {
   const url = buildUrl({
     q: `'${folderId}' in parents and trashed = false`,
