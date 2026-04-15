@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { DriveItem } from "../types/drive";
-import { listFolderContents } from "../services/drive";
+import { getDriveGridImage, listFolderContents } from "../services/drive";
+import { ImagePreviewModal } from "../components/ImagePreviewModal";
 
 export function GalleryPage() {
   const { folderId = "" } = useParams();
   const [folders, setFolders] = useState<DriveItem[]>([]);
   const [images, setImages] = useState<DriveItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentImageIndex, setCurrentImageIndex] = useState<number | null>(
+    null,
+  );
 
   useEffect(() => {
     async function load() {
@@ -33,6 +37,28 @@ export function GalleryPage() {
     if (folderId) load();
   }, [folderId]);
 
+  function handleOpenImage(index: number) {
+    setCurrentImageIndex(index);
+  }
+
+  function handleCloseModal() {
+    setCurrentImageIndex(null);
+  }
+
+  function handlePrevImage() {
+    setCurrentImageIndex((prev) => {
+      if (prev === null || images.length === 0) return prev;
+      return prev === 0 ? images.length - 1 : prev - 1;
+    });
+  }
+
+  function handleNextImage() {
+    setCurrentImageIndex((prev) => {
+      if (prev === null || images.length === 0) return prev;
+      return prev === images.length - 1 ? 0 : prev + 1;
+    });
+  }
+
   if (loading) return <div>Carregando galeria...</div>;
 
   return (
@@ -49,7 +75,7 @@ export function GalleryPage() {
                 href={`/gallery/${folder.id}`}
                 className="rounded-2xl border p-4 shadow-sm"
               >
-                <div className="mb-3 aspect-[4/3] rounded-xl bg-neutral-100" />
+                <div className="mb-3 aspect-4/3 rounded-xl bg-neutral-100" />
                 <h3 className="font-medium">{folder.name}</h3>
               </a>
             ))}
@@ -57,22 +83,38 @@ export function GalleryPage() {
         </>
       )}
 
-      <h2 className="mb-4 text-xl font-semibold">Imagens</h2>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {images.map((image) => (
-          <div
-            key={image.id}
-            className="overflow-hidden rounded-2xl border bg-white shadow-sm"
-          >
-            <img
-              src={image.thumbnailLink}
-              alt={image.name}
-              className="aspect-square w-full object-cover"
-              referrerPolicy="no-referrer"
-            />
+      {images.length > 0 && (
+        <>
+          <h2 className="mb-4 text-xl font-semibold">Imagens</h2>
+
+          <div className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
+            {images.map((image, index) => (
+              <button
+                onClick={() => handleOpenImage(index)}
+                type="button"
+                key={image.id}
+                className="mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-neutral-100 shadow-sm transition hover:shadow-md"
+              >
+                <img
+                  src={getDriveGridImage(image.thumbnailLink)}
+                  alt={image.name}
+                  className="h-auto w-full object-cover transition duration-300 hover:scale-[1.02]"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+              </button>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
+
+      <ImagePreviewModal
+        images={images}
+        currentIndex={currentImageIndex}
+        onClose={handleCloseModal}
+        onPrev={handlePrevImage}
+        onNext={handleNextImage}
+      />
     </div>
   );
 }

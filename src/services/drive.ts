@@ -8,6 +8,11 @@ function buildUrl(params: Record<string, string>) {
   return `${BASE_URL}?${searchParams.toString()}`;
 }
 
+export function getDriveGridImage(url?: string, size = 1200) {
+  if (!url) return "";
+  return url.replace(/=s\d+/, `=s${size}`);
+}
+
 export async function listFolderContents(folderId: string) {
   const url = buildUrl({
     q: `'${folderId}' in parents and trashed = false`,
