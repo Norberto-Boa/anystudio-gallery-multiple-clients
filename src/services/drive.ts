@@ -1,0 +1,52 @@
+const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+const ROOT_FOLDER_ID = import.meta.env.VITE_DRIVE_ROOT_FOLDER_ID;
+
+const BASE_URL = "https://www.googleapis.com/drive/v3/files";
+
+function buildUrl(params: Record<string, string>) {
+  const searchParams = new URLSearchParams(params);
+  return `${BASE_URL}?${searchParams.toString()}`;
+}
+
+export async function listFolderContents(folderId: string) {
+  const url = buildUrl({
+    q: `${folderId} in parents and trashed = false`,
+    fields: "nextPageToken,files(id,name,mimeType,webViewLink)",
+    orderBy: "folder,name",
+    pageSize: "100",
+    supportsAllDrives: "true",
+    includeItemsFromAllDrives: "true",
+    key: API_KEY,
+  });
+
+  const res = await fetch(url);
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch folder contents: ${res}");
+  }
+
+  return res.json();
+}
+
+export async function listRootContent() {
+  return listFolderContents(ROOT_FOLDER_ID);
+}
+
+export async function fetchFolderCover(folderId: string) {
+  const url = buildUrl({
+    q: `'${folderId}' in parents and mimeType contains 'image/' and trashed = false`,
+    fields: "files(id,name,mimeType,thumbnailLink,webViewLink)",
+    pageSize: "1",
+    supportsAllDrives: "true",
+    includeItemsFromAllDrives: "true",
+    key: API_KEY,
+  });
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch folder cover: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data.files?.[0] ?? null;
+}
