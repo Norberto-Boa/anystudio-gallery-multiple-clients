@@ -10,7 +10,7 @@ function buildUrl(params: Record<string, string>) {
 
 export async function listFolderContents(folderId: string) {
   const url = buildUrl({
-    q: `${folderId} in parents and trashed = false`,
+    q: `'${folderId}' in parents and trashed = false`,
     fields: "nextPageToken,files(id,name,mimeType,webViewLink)",
     orderBy: "folder,name",
     pageSize: "100",
@@ -41,6 +41,7 @@ export async function fetchFolderCover(folderId: string) {
     includeItemsFromAllDrives: "true",
     key: API_KEY,
   });
+
   const response = await fetch(url);
 
   if (!response.ok) {
