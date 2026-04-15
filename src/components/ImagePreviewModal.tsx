@@ -1,6 +1,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import type { DriveItem } from "../types/drive";
 import { ChevronLeft, ChevronRight, Download, X } from "lucide-react";
+import { useEffect, useRef } from "react";
 
 interface ImagePreviewModalProps {
   images: DriveItem[];
@@ -28,10 +29,49 @@ export function ImagePreviewModal({
   const isOpen = currentIndex !== null;
   const image = currentIndex !== null ? images[currentIndex] : null;
 
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") onClose();
+      if (event.key === "ArrowLeft") onPrev();
+      if (event.key === "ArrowRight") onNext();
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose, onPrev, onNext]);
+
+  function handleTouchStart(e: React.TouchEvent<HTMLDivElement>) {
+    touchStartX.current = e.changedTouches[0].clientX;
+    touchEndX.current = null;
+  }
+
+  function handleTouchEnd(e: React.TouchEvent<HTMLDivElement>) {
+    touchEndX.current = e.changedTouches[0].clientX;
+
+    if (touchStartX.current === null || touchEndX.current === null) return;
+
+    const distance = touchStartX.current - touchEndX.current;
+    const minSwipeDistance = 25;
+
+    if (distance > minSwipeDistance) {
+      onNext();
+    } else if (distance < -minSwipeDistance) {
+      onPrev();
+    }
+
+    touchStartX.current = null;
+    touchEndX.current = null;
+  }
+
   if (!image) return null;
 
   return (
-    <Dialog.Root open={isOpen} onOpenChange={(opem) => !open && onClose()}>
+    <Dialog.Root open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm" />
 
@@ -65,7 +105,11 @@ export function ImagePreviewModal({
             </div>
           </div>
 
-          <div className="relative flex flex-1 items-center justify-center px-4 pb-6">
+          <div
+            className="relative flex flex-1 items-center justify-center px-4 pb-6"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
             <button
               type="button"
               onClick={onPrev}
