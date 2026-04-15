@@ -11,7 +11,7 @@ function buildUrl(params: Record<string, string>) {
 export async function listFolderContents(folderId: string) {
   const url = buildUrl({
     q: `'${folderId}' in parents and trashed = false`,
-    fields: "nextPageToken,files(id,name,mimeType,webViewLink)",
+    fields: "nextPageToken,files(id,name,mimeType,thumbnailLink,webViewLink)",
     orderBy: "folder,name",
     pageSize: "100",
     supportsAllDrives: "true",
