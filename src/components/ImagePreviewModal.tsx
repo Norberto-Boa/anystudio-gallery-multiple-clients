@@ -113,7 +113,7 @@ export function ImagePreviewModal({
             <button
               type="button"
               onClick={onPrev}
-              className="absolute left-4 z-10 inline-flex h-12 w-12 items-cneter justify-center rounded-full bg-black/40 text-white transition hover:bg-black/60"
+              className="absolute left-4 z-10 inline-flex h-12 w-12 items-center justify-center rounded-full bg-black/40 text-white transition hover:bg-black/60"
             >
               <ChevronLeft size={24} />
             </button>
@@ -128,7 +128,7 @@ export function ImagePreviewModal({
             <button
               type="button"
               onClick={onNext}
-              className="absolute right-4 z-10 inline-flex h-12 w-12 items-cneter justify-center rounded-full bg-black/40 text-white transition hover:bg-black/60"
+              className="absolute right-4 z-10 inline-flex h-12 w-12 items-center justify-center rounded-full bg-black/40 text-white transition hover:bg-black/60"
             >
               <ChevronRight size={24} />
             </button>
