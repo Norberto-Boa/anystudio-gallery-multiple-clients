@@ -12,6 +12,7 @@ import { GalleryHeroHeader } from "../components/GalleryHeroHeader";
 import { formatDate } from "../helpers/format-date";
 import { Helmet } from "react-helmet-async";
 import { GalleryImage } from "../components/GalleryImage";
+import { GalleryPageSkeleton } from "../components/GalleryPageSkeleton";
 
 export function GalleryPage() {
   const { folderId = "" } = useParams();
@@ -77,7 +78,7 @@ export function GalleryPage() {
     });
   }
 
-  if (loading) return <div>Carregando galeria...</div>;
+  if (loading) return <GalleryPageSkeleton />;
 
   return (
     <>

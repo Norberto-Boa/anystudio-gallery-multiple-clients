@@ -12,7 +12,7 @@ export function GalleryHeroHeader({
   date,
 }: GalleryHeroHeaderProps) {
   return (
-    <section className="relative left-1/2 right-1/2 w-screen -translate-x-1/2 overflow-hidden max-w-7xl rounded-3xl">
+    <section className="relative left-1/2 right-1/2 -translate-x-1/2 overflow-hidden max-w-7xl rounded-3xl">
       <div className="relative h-[40vh] min-h-80 w-full">
         {coverUrl ? (
           <img
