@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { DriveItem } from "../types/drive";
-import { getDriveGridImage, listFolderContents } from "../services/drive";
+import {
+  getDriveGridImage,
+  getDriveItem,
+  listFolderContents,
+} from "../services/drive";
 import { ImagePreviewModal } from "../components/ImagePreviewModal";
 import { GalleryHeroHeader } from "../components/GalleryHeroHeader";
+import { formatDate } from "../helpers/format-date";
 
 export function GalleryPage() {
   const { folderId = "" } = useParams();
@@ -13,23 +18,31 @@ export function GalleryPage() {
   const [currentImageIndex, setCurrentImageIndex] = useState<number | null>(
     null,
   );
+  const [currentFolder, setCurrentFolder] = useState<DriveItem | null>(null);
 
   useEffect(() => {
     async function load() {
       try {
         setLoading(true);
-        const data = await listFolderContents(folderId);
+        const [folderData, contentsData] = await Promise.all([
+          getDriveItem(folderId),
+          listFolderContents(folderId),
+        ]);
 
-        const folderItems = data.files.filter(
+        setCurrentFolder(folderData);
+
+        const folderItems = contentsData.files.filter(
           (item) => item.mimeType === "application/vnd.google-apps.folder",
         );
 
-        const imageItems = data.files.filter((item) =>
+        const imageItems = contentsData.files.filter((item) =>
           item.mimeType.startsWith("image/"),
         );
 
         setFolders(folderItems);
         setImages(imageItems);
+      } catch (error) {
+        console.error(error);
       } finally {
         setLoading(false);
       }
@@ -66,9 +79,9 @@ export function GalleryPage() {
     <div className="mx-auto max-w-7xl p-6">
       {images.length > 0 ? (
         <GalleryHeroHeader
-          title="Baptismo"
+          title={currentFolder?.name || "Um lindo album"}
           coverUrl={images[0].thumbnailLink}
-          date="11 de Abril de 2026"
+          date={formatDate(currentFolder?.createdTime)}
         />
       ) : (
         <h1 className="mb-6 text-3xl font-bold">Galeria</h1>

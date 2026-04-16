@@ -6,6 +6,9 @@ export interface DriveItem {
   mimeType: string;
   thumbnailLink?: string;
   webViewLink?: string;
+  webContentLink?: string;
+  createdTime?: string;
+  modifiedTime?: string;
 }
 
 export interface FolderContentsResponse {

@@ -61,3 +61,23 @@ export async function fetchFolderCover(folderId: string) {
   const data = await response.json();
   return data.files?.[0] ?? null;
 }
+
+export async function getDriveItem(fileId: string) {
+  const params = new URLSearchParams({
+    fields:
+      "id,name,mimeType,thumbnailLink,webViewLink,webContentLink,createdTime,modifiedTime",
+    supportsAllDrives: "true",
+    includeItemsFromAllDrives: "true",
+    key: API_KEY,
+  });
+
+  const res = await fetch(`${BASE_URL}/${fileId}?${params.toString()}`);
+
+  console.log(res);
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch drive item: ${res}`);
+  }
+
+  return res.json();
+}

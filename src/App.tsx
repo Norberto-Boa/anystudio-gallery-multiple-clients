@@ -7,7 +7,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<CollectionsPage />} />
+        <Route path="/collections-private" element={<CollectionsPage />} />
         <Route path="/gallery/:folderId" element={<GalleryPage />} />
       </Routes>
     </BrowserRouter>

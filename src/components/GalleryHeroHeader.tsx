@@ -29,7 +29,7 @@ export function GalleryHeroHeader({
 
         <div className="absolute inset-x-0 bottom-0 z-10">
           <div className="mx-auto mx-w-7xl px-6 pb-10 md:px-10 md:pb-14">
-            <p className="mb-3 text-sm font-medium uppercase tracking-[0.18em] text-white/75">
+            <p className="mb-3 text-sm font-medium uppercase tracking-[0.18em] text-white/80">
               Galeria
             </p>
 
@@ -37,7 +37,7 @@ export function GalleryHeroHeader({
               {title}
             </h1>
 
-            <p className="mt-4 text-sm text-white/80 md:text-base">{date}</p>
+            <p className="mt-4 text-sm text-white/90 md:text-base">{date}</p>
           </div>
         </div>
       </div>
