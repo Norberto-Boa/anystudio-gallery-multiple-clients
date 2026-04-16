@@ -11,6 +11,7 @@ import { ImagePreviewModal } from "../components/ImagePreviewModal";
 import { GalleryHeroHeader } from "../components/GalleryHeroHeader";
 import { formatDate } from "../helpers/format-date";
 import { Helmet } from "react-helmet-async";
+import { GalleryImage } from "../components/GalleryImage";
 
 export function GalleryPage() {
   const { folderId = "" } = useParams();
@@ -160,12 +161,11 @@ export function GalleryPage() {
                   key={image.id}
                   className="mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-neutral-100 shadow-sm transition hover:shadow-md"
                 >
-                  <img
+                  <GalleryImage
                     src={getDriveGridImage(image.thumbnailLink)}
                     alt={image.name}
-                    className="h-auto w-full object-cover transition duration-300 hover:scale-[1.02]"
-                    loading="lazy"
-                    referrerPolicy="no-referrer"
+                    className="min-h-45"
+                    imgClassName="transition duration-500 group-hover:scale-[1.02]"
                   />
                 </button>
               ))}
