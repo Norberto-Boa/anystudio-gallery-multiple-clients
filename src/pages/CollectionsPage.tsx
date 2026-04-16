@@ -17,7 +17,7 @@ export function CollectionsPage() {
 
         const data = await listRootContent();
         const folders = data.files.filter(
-          (item) => item.mimeType === "application/vnd.google-apps.folder",
+          (item: any) => item.mimeType === "application/vnd.google-apps.folder",
         );
 
         setItems(folders);

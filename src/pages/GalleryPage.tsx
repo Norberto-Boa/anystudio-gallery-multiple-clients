@@ -35,10 +35,10 @@ export function GalleryPage() {
         setCurrentFolder(folderData);
 
         const folderItems = contentsData.files.filter(
-          (item) => item.mimeType === "application/vnd.google-apps.folder",
+          (item: any) => item.mimeType === "application/vnd.google-apps.folder",
         );
 
-        const imageItems = contentsData.files.filter((item) =>
+        const imageItems = contentsData.files.filter((item: any) =>
           item.mimeType.startsWith("image/"),
         );
 
@@ -150,9 +150,9 @@ export function GalleryPage() {
 
         {images.length > 0 && (
           <>
-            <h2 className="mb-4 text-xl font-semibold">Imagens</h2>
+            {/* <h2 className="mb-4 text-xl font-semibold">Imagens</h2> */}
 
-            <div className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
+            <div className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4 mt-8">
               {images.map((image, index) => (
                 <button
                   onClick={() => handleOpenImage(index)}

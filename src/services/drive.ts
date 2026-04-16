@@ -23,7 +23,7 @@ export async function listFolderContents(folderId: string) {
     q: `'${folderId}' in parents and trashed = false`,
     fields: "nextPageToken,files(id,name,mimeType,thumbnailLink,webViewLink)",
     orderBy: "folder,name",
-    pageSize: "100",
+    pageSize: "250",
     supportsAllDrives: "true",
     includeItemsFromAllDrives: "true",
     key: API_KEY,
