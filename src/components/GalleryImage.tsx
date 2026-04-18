@@ -20,14 +20,17 @@ export function GalleryImage({
   return (
     <div className={`relative overflow-hidden ${className}`} onClick={onClick}>
       {!loaded && (
-        <div className="absolute inset-0 animate-pulse bg-neutral-200" />
+        <div className="absolute inset-0 z-10 overflow-hidden">
+          <div className="absolute inset-0 bg-neutral-200" />
+          <div className="absolute inset-0 animate-shimmer bg-linear-to-t from-transparent via-white/40 to-transparent" />
+        </div>
       )}
 
       <img
         src={src}
         alt={alt}
         onLoad={() => setLoaded(true)}
-        className={`h-auto w-full transition duration-500 ${loaded ? "opacity-100" : "opacity-0"} ${imgClassName}`}
+        className={`relative z-20 h-auto w-full transition duration-500 ${loaded ? "opacity-100" : "opacity-0"} ${imgClassName}`}
         loading="lazy"
         referrerPolicy="no-referrer"
       />

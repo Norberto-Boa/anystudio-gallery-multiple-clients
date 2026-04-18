@@ -46,7 +46,7 @@ export function CollectionsPage() {
             to={`/gallery/${folder.id}`}
             className="rounded-2xl border p-4 shadow-sm transition hover:shadow-md"
           >
-            <div className="mb-3 aspect-[4/3] rounded-xl bg-neutral-100" />
+            <div className="mb-3 aspect-4/3 rounded-xl bg-neutral-100" />
             <h2 className="font-semibold">{folder.name}</h2>
           </Link>
         ))}
