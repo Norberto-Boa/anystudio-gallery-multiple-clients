@@ -1,4 +1,3 @@
-import type { DriveItem } from "../types/drive";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 const ROOT_FOLDER_ID = import.meta.env.VITE_DRIVE_ROOT_FOLDER_ID;
