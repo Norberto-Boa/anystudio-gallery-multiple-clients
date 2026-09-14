@@ -57,7 +57,7 @@ export default function FolderCard({
       return (
     <Link
       to={`/gallery/${folder.id}`}
-      className="group block overflow-hidden rounded-xl"
+      className="group block overflow-hidden rounded-xl shadow-stone-400 shadow-lg"
     >
       <div className="relative aspect-4/5 overflow-hidden bg-zinc-100">
         {coverImageUrl ? (
