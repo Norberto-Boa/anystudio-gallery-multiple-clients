@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import type { DriveItem } from "../types/drive";
 import { listRootContent } from "../services/drive";
-import { Link } from "react-router-dom";
 import FolderCard from "../components/FolderCard";
 
 export function CollectionsPage() {
