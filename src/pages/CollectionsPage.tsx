@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { DriveItem } from "../types/drive";
 import { listRootContent } from "../services/drive";
 import { Link } from "react-router-dom";
+import FolderCard from "../components/FolderCard";
 
 export function CollectionsPage() {
   const [items, setItems] = useState<DriveItem[]>([]);
@@ -13,9 +14,10 @@ export function CollectionsPage() {
       try {
         setLoading(true);
         setError(null);
-        console.log("executing");
+
 
         const data = await listRootContent();
+
         const folders = data.files.filter(
           (item: any) => item.mimeType === "application/vnd.google-apps.folder",
         );
@@ -32,23 +34,36 @@ export function CollectionsPage() {
     load();
   }, []);
 
-  if (loading) return <div>Carregando colecoes...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading) {
+    return (
+      <div className="mx-auto w-full max-w-450 px-4 py-6">
+        <p className="text-zinc-500">
+          Carregando coleções...
+        </p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="mx-auto w-full max-w-450 px-4 py-6">
+        <p className="text-red-500">
+          {error}
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <div className="mx-auto max-w-7xl p-6">
-      <h1 className="mb-6 text-3xl font-bold">Coleções</h1>
+    <div className="mx-auto max-w-450 px-4 py-6 sm:px-6 lg:px-8">
+      <h1 className="mb-6 text-3xl font-bold tracking-tight">Coleções</h1>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
         {items.map((folder) => (
-          <Link
+          <FolderCard 
             key={folder.id}
-            to={`/gallery/${folder.id}`}
-            className="rounded-2xl border p-4 shadow-sm transition hover:shadow-md"
-          >
-            <div className="mb-3 aspect-4/3 rounded-xl bg-neutral-100" />
-            <h2 className="font-semibold">{folder.name}</h2>
-          </Link>
+            folder={folder}
+          />
         ))}
       </div>
     </div>
