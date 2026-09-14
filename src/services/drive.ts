@@ -1,7 +1,13 @@
+import type { DriveItem } from "../types/drive";
+
 const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 const ROOT_FOLDER_ID = import.meta.env.VITE_DRIVE_ROOT_FOLDER_ID;
 
 const BASE_URL = "https://www.googleapis.com/drive/v3/files";
+
+interface DriveListResponse {
+  files: DriveItem[];
+}
 
 function buildUrl(params: Record<string, string>) {
   const searchParams = new URLSearchParams(params);
